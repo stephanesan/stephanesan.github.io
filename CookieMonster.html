@@ -34,8 +34,13 @@
 
   function receiver(e) {
     if (e.origin == "http://jsbin.com") {
-      setCookie("ScoutCookie", e.data, 1);
-      var newC = document.getElementById("Cookie");
+      if(e.data == "") {
+        alert("First you need to generate the cookie, hit ok to redirect to http://jsbin.com/joxat ...");
+        window.location.href="http://jsbin.com/joxat";
+      } else {
+        setCookie("ScoutCookie", e.data, 1);
+        var newC = document.getElementById("Cookie");
+      }
       newC.innerText = e.data;
     } else {
       alert("Cookie received from :"+e.origin+"\nNot from my trusted Scout!");
