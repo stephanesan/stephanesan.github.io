@@ -29,13 +29,14 @@
   
 <body>
   Recieved a Cookie from the scout:
-  <a id="Cookie"></a>
+  <a id="Cookie" style="color:red"></a>
 <script>
 
   function receiver(e) {
     if (e.origin == "http://jsbin.com") {
       setCookie("ScoutCookie", e.data, 1);
-      alert("Cookie received with value: "+e.data);
+      var newC = document.getElementById("Cookie");
+      newC.innerText = e.data;
     } else {
       alert("Cookie received from :"+e.origin+"\nNot from my trusted Scout!");
     }
