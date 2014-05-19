@@ -28,9 +28,11 @@
 </head>
   
 <body>
-  Recieved a Cookie from the scout @ http://jsbin.com/:
-  <a id="Cookie" style="color:red"></a>
-  <p><div id="Message" style="color:red" style="visibility='hidden'">
+  <div id="CMessage" style="visibility='hidden'">
+    Recieved a Cookie from the scout @ http://jsbin.com/:
+    <div id="Cookie" style="color:red"></div>
+  </div>
+  <div id="RMessage" style="color:red" style="visibility='hidden'">
     <button type="button" onclick="window.location.href='http://jsbin.com/joxat'">Click to continue or wait for 10 seconds</button>
   </div>
 <script>
@@ -38,12 +40,12 @@
   function receiver(e) {
     if (e.origin == "http://jsbin.com") {
       if(e.data == "") {
-        document.getElementById("Message").style.visibility="visible"
+        document.getElementById("RMessage").style.visibility="visible"
         setTimeout(function () {window.location.href="http://jsbin.com/joxat"},10000);
       } else {
         setCookie("ScoutCookie", e.data, 1);
-        var newC = document.getElementById("Cookie");
-        newC.innerText = e.data;
+        document.getElementById("CMessage").style.visibility="visible"
+        document.getElementById("Cookie").innerText = e.data;
       }
     } else {
       alert("Cookie received from :"+e.origin+"\nNot from my trusted Scout!");
