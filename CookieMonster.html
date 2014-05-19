@@ -37,7 +37,7 @@
       setCookie("ScoutCookie", e.data, 1);
       alert(e.date)
     } else {
-      alert("Not from my trusted Scout!");
+      alert("Message from:"+e.origin+"\nNot from my trusted Scout!");
     }
   }
   window.addEventListener('message', receiver, false);
