@@ -35,9 +35,9 @@
   function receiver(e) {
     if (e.origin == "http://jsbin.com") {
       setCookie("ScoutCookie", e.data, 1);
-      alert(e.date)
+      alert("Cookie received with value: "+e.data);
     } else {
-      alert("Message from:"+e.origin+"\nNot from my trusted Scout!");
+      alert("Cookie received from :"+e.origin+"\nNot from my trusted Scout!");
     }
   }
   window.addEventListener('message', receiver, false);
