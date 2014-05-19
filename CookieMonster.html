@@ -30,13 +30,14 @@
 <body>
   Recieved a Cookie from the scout @ http://jsbin.com/:
   <a id="Cookie" style="color:red"></a>
+  <p><a id="Message" style="color:red"></a>
 <script>
 
   function receiver(e) {
     if (e.origin == "http://jsbin.com") {
       if(e.data == "") {
-        alert("First you need to generate the cookie, hit ok to redirect to http://jsbin.com/joxat ...");
-        window.location.href="http://jsbin.com/joxat";
+        document.getElementById("Message").innerText = "First you need to generate the cookie, hit ok to redirect to http://jsbin.com/joxat in 5 seconds ...";
+        setTimeout(function {window.location.href="http://jsbin.com/joxat";),5000);
       } else {
         setCookie("ScoutCookie", e.data, 1);
         var newC = document.getElementById("Cookie");
