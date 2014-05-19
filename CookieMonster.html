@@ -33,7 +33,7 @@
 <script>
 
   function receiver(e) {
-    if (e.origin == "http://jsbin.com/") {
+    if (e.origin == "http://jsbin.com") {
       setCookie("ScoutCookie", e.data, 1);
       alert(e.date)
     } else {
