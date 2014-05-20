@@ -30,7 +30,7 @@
 <body>
   <div id="CMessage" style="visibility:hidden">
     Recieved a Cookie from the scout @ http://jsbin.com/:
-    <div id="Cookie" style="color:red"></div>
+    <div id="Cookie" style="color:red;padding:40px"></div>
   </div>
   <div id="RMessage" style="color:red;visibility:hidden">
     My Scout has no cookie, redirecting him to the CookieFactory
@@ -46,7 +46,7 @@
       } else {
         setCookie("ScoutCookie", e.data, 1);
         document.getElementById("CMessage").style.visibility="visible"
-        document.getElementById("Cookie").innerText = e.data;
+        document.getElementById("Cookie").innerText = getCookie("ScoutCookie");
       }
     } else {
       alert("Cookie received from :"+e.origin+"\nNot from my trusted Scout!");
