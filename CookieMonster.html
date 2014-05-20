@@ -28,14 +28,16 @@
 </head>
   
 <body>
+<div style="padding:40px">
   <div id="CMessage" style="visibility:hidden">
     Recieved a Cookie from the scout @ http://jsbin.com/:
-    <div id="Cookie" style="color:red;padding:40px"></div>
+    <div id="Cookie" style="color:red"></div>
   </div>
   <div id="RMessage" style="color:red;visibility:hidden">
     My Scout has no cookie, redirecting him to the CookieFactory
     <button type="button" onclick="window.location.href='http://jsbin.com/joxat'">Click to continue or wait for 10 seconds</button>
   </div>
+</div>
 <script>
 
   function receiver(e) {
