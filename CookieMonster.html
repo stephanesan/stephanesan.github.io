@@ -56,8 +56,7 @@
   // Wake up the scout
   ifrm = document.createElement("iframe");   
   ifrm.setAttribute("src", "http://jsbin.com/numav"); 
-  ifrm.style.width = "0px"; 
-  ifrm.style.height = "0px"; 
+  ifrm.setAttribute("style","visibility:hidden");
   document.body.appendChild(ifrm); 
 </script>
 </body>
