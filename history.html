@@ -3,9 +3,10 @@
 <title>HTML5 History API</title>
 </head>
 <body onload=locationHashChanged()>
+        <h1>
         This is an example app to demonstrate how single multiple state applications can react to the browserBack/browserForward key with state transition.<br>
-        The app states are pre-stored and rendered as colors on the div element to demostrate how state can be associated to the hash/app. Of course Nothing prevents this states to be modified (It is a single app after all with global variables :-)<br>
-        User Guide<br>
+        The app states are pre-stored and rendered as colors on the div element to demostrate how state can be associated to the hash/app. Of course Nothing prevents this states to be modified (It is a single app after all with global variables :-)</h1>
+        <h2>User Guide</h2>
         Use the numerical pad to jump from one app to another. Use the browserBack/browserForward to navigate the history.
         Pay attention how the key presses keeps incrementing. This proves the single app state transitions in contrast to app navigation. Yet the browser back/forward allows the user to navigate the states<br>
         Also note how a reload or bookmark keeps automatically restores the application state.
@@ -42,13 +43,21 @@ window.addEventListener("popstate", function(e) {
 window.addEventListener("hashchange", locationHashChanged, false);
 
 function keyup_handler(e) {
-        if((e.location == e.DOM_KEY_LOCATION_NUMPAD && "U+004" == e.keyIdentifier.substring(0,5)) ||
-        (e.location == e.DOM_KEY_LOCATION_STANDARD && e.keyIdentifier.substring(0,5) == "U+003")) {
-                var num = e.keyIdentifier.substring(5,6);
+        var num;
+        if(e.keyIdentifier != undefined) {
+          if((e.location == e.DOM_KEY_LOCATION_NUMPAD && "U+004" == e.keyIdentifier.substring(0,5)) ||
+          (e.location == e.DOM_KEY_LOCATION_STANDARD && e.keyIdentifier.substring(0,5) == "U+003")) {
+                num = e.keyIdentifier.substring(5,6);
+                return;
+          }
+        } else if(e.key != undefined) {
+                num = e.key;       
+        }
+        if(0<=num && num<10) {
                 history.pushState(null,null,document.location.pathname+"#state_"+num);
                 locationHashChanged();
-                return;
         }
+        
 }
 
 window.addEventListener("keyup", keyup_handler, false);
