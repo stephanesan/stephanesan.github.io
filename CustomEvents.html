@@ -1,0 +1,114 @@
+<html>
+<head>
+<title>
+Hierarchical Custom Event demo
+</title>
+</head>
+
+<body>
+
+<h1>Hierarchical CustomEvents demo</h1>
+
+  <br><i>
+  (Un)Register a listener on the target corresponding to the checkbox's label (example: check the box to listen to all the Conflicts for Bookings""):
+  </i><br>
+  <form>
+    <ul>
+  <li><input type="checkbox" name="Conflict" value="ON" onclick='handleClick(this)'>Conflict Listener<br></li>
+     <ul>
+	   <li><input type="checkbox" name="Conflict.Booking" value="ON" onclick='handleClick(this)'>Conflict.Booking Listener<br></li>
+       <ul>
+	     <li><input type="checkbox" name="Conflict.Booking.Tuner" value="ON" onclick='handleClick(this)'>Conflict.Booking.Tuner Listener<br></li>
+	     <li><input type="checkbox" name="Conflict.Booking.Disk" value="ON" onclick='handleClick(this)'>Conflict.Booking.Disk Listener<br></li>
+	   </ul>
+	 
+    <li><input type="checkbox" name="Conflict.Imminent" value="ON" onclick='handleClick(this)'>Conflict.Imminent Listener</li>
+	</ul></ul>
+  </form>
+  
+
+  <br><i>
+  Press a button to trigger an specific event (Example: tigger a Tuner booking conflict event): 
+  </i><br>
+
+  <button value="Conflict" onclick="DispatchEvent(this)">Notify from Conflict</button>
+  <button value="Conflict.Booking" onclick="DispatchEvent(this)">Notify from Conflict.Booking</button>
+  <button value="Conflict.Booking.Tuner" onclick="DispatchEvent(this)">Notify from Conflict.Booking.Tuner</button>
+  <button value="Conflict.Booking.Disk" onclick="DispatchEvent(this)">Notify from Conflict.Booking.Disk</button>
+  <button value="Conflict.Imminent" onclick="DispatchEvent(this)">Notify from Conflict.Imminent</button>
+      
+	  
+  <br><br><i>
+  And notice how your listeners trap the event: (The tuner booking conflict event gets trapped by the listener registered for all booking conflicts)<br>
+  Report which event was triggered (the registered listeners don't stop the bubbeling):
+  </i><br>
+
+<ul>
+  <li>Notification from Conflict: <a id="report_idConflict">0</a><br></li>
+  <ul><li>Notification from Conflict.Booking: <a id="report_idConflict.Booking">0</a><br></li>
+  <ul>
+    <li>Notification from Conflict.Booking.Tuner: <a id="report_idConflict.Booking.Tuner">0</a><br></li>
+    <li>Notification from Conflict.Booking.Disk: <a id="report_idConflict.Booking.Disk">0</a><br></li>
+  </ul>
+	  <li>Notification from Conflict.Imminent: <a id="report_idConflict.Imminent">0</a></li>
+</ul></ul>
+
+
+	
+  <script type="text/javascript">
+
+  function myListener(event) {
+	// report which event happened
+	  document.getElementById("report_id"+event.target.id).innerHTML ++;
+  }
+
+  function handleClick(cb) {
+	// add/rm the lsiteners
+	  if(cb.checked) {
+		  document.getElementById(cb.name).addEventListener('CiscoNotification', myListener);
+	  } else {
+		  document.getElementById(cb.name).removeEventListener('CiscoNotification', myListener);
+	  }
+  }
+
+  function DispatchEvent(b){
+	// dispatch the event to the target that corresponds to teh button's value
+      var customEvent = document.createEvent('CustomEvent');  
+      customEvent.initCustomEvent('CiscoNotification', true, false, {});  
+      document.getElementById(b.value).dispatchEvent(customEvent);
+  }
+
+  </script>
+
+  <script type="text/javascript">
+	// Create the notification nodes
+
+	var l1 = document.createElement('CiscoPropriateryNode'); l1.id = "Conflict";
+	var l1_1 = document.createElement('CiscoPropriateryNode'); l1_1.id = "Conflict.Booking"; 
+	var l1_1_1 = document.createElement('CiscoPropriateryNode'); l1_1_1.id = "Conflict.Booking.Tuner"; 
+	var l1_1_2 = document.createElement('CiscoPropriateryNode'); l1_1_2.id = "Conflict.Booking.Disk"; 
+	var l1_2 = document.createElement('CiscoPropriateryNode'); l1_2.id = "Conflict.Imminent"; 
+	
+	var fragment = document.createDocumentFragment();
+	fragment.appendChild(l1);
+	l1.appendChild(l1_1);
+	l1_1.appendChild(l1_1_1);
+	l1_1.appendChild(l1_1_2);
+	l1.appendChild(l1_2);
+	
+	//l1_1.addEventListener('CiscoNotification', function(event) {
+        //	alert("target id = " + event.target.id);
+        //});
+
+	document.body.insertBefore(fragment, document.body.firstChild);
+
+	//var e = document.createEvent('CustomEvent');
+	//e.initCustomEvent('CiscoNotification', true, false)
+        //l1_1_1.dispatchEvent(e);
+
+  </script>  
+</body>
+</html>
+
+
+
