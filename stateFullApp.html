@@ -59,7 +59,7 @@ function setQueryVariable(key, value, query) {
 } 
 
 function locationHashChanged() {
-    var hash = decodeURI(location.hash.substring(1,location.hash.length));
+    var hash = decodeURIComponent(location.hash.substring(1,location.hash.length));
 	var num = getQueryVariable("state", hash);
 	var newDepth = getQueryVariable("depth", hash);
 	if ("" == num) return;
@@ -99,7 +99,7 @@ function keyup_handler(e) {
         if(0<=num && num<10) {
 				var hash = setQueryVariable("state", num, null)
 				hash = setQueryVariable("depth", 1+(+oldDepth), hash);
-                history.pushState(null,null,document.location.pathname+'#'+encodeURI(hash));
+                history.pushState(null,null,document.location.pathname+'#'+encodeURIComponent(hash));
                 locationHashChanged();
         }
 }
