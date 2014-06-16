@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html><head>
+<title>HTML5 History API</title>
+</head>
+<body onload=locationHashChanged()>
+        <h1>Introduction</h1>
+        This example application demonstrates how single application with multiple state can manage state transitions triggered by the on browser's Back/Forward buttons.<br>
+        The applications states are pre-stored and rendered as colors on the div element to demostrate how state can be associated to the hash/app. Of course Nothing prevents this states to be modified (It is a single app after all with global variables :-)
+        <h2>User Guide</h2>
+        Use the numerical pad to jump from one app to another. Use the browserBack/browserForward to navigate the history.
+        Pay attention how the key presses keeps incrementing. This proves the single app state transitions in contrast to app navigation. Yet the browser back/forward allows the user to navigate the states<br>
+        Also note how a reload or bookmark keeps automatically restores the application state.
+        <h2 id=depth></h2>
+        <h2 id=count></h2>
+<div id="state" style="width:400px; height:100px; background-color:#FFFFFF">
+        <h1 id=app> </h1>
+</div>
+<br><h2>History Stack</h2><br>
+<div id="state_history" class="holder">
+</div>
+<style type="text/css">
+div#state_history.holder {   
+  display: flex;
+  flex-flow: row wrap; 
+}
+</style>
+<script>
+var stateData = ["aqua", "blue", "fuchsia", "lime", "maroon", "olive", "orange", "purple", "red", "teal", "yellow"];
+var keycount=0;
+var oldDepth=-1;
+
+function popDiv() {
+	var list=document.getElementById("state_history");
+	list.removeChild(list.childNodes[0]);
+}
+
+function pushDiv(num) {
+	var list=document.getElementById("state_history");
+	var el = document.createElement("DIV");
+	el.setAttribute("style", "width:20px; height:20px; background-color:"+stateData[num]);
+	list.insertBefore(el, list.childNodes[0]);
+}
+
+function getQueryVariable(key, query) {
+    var vars = query.split('&');
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) == key) {
+            return decodeURIComponent(pair[1]);
+        }
+    }
+	return "";
+}
+
+function setQueryVariable(key, value, query) {
+	if(null == query) query = '';
+	else query+='&';
+	return (query+encodeURIComponent(key)+'='+encodeURIComponent(value));
+} 
+
+function locationHashChanged() {
+    var hash = decodeURI(location.hash.substring(1,location.hash.length));
+	var num = getQueryVariable("state", hash);
+	var newDepth = getQueryVariable("depth", hash);
+	if ("" == num) return;
+	// initialize the starting depth 
+	if(oldDepth==-1) oldDepth=newDepth-1;
+	if(oldDepth<newDepth) {
+		pushDiv(num);
+	} else if(oldDepth>newDepth) {
+		popDiv();
+	} else {
+		alert("Reload?");
+	}
+	oldDepth=newDepth;
+	var state = document.getElementById("state");
+        // update the app with new state transition request
+        state.style.backgroundColor = stateData[num];
+        var app = document.getElementById("app");
+        app.textContent="ApplicationState #"+num;
+        var count = document.getElementById("count");
+        count.textContent="Total Transitions = "+ keycount;
+        var depth = document.getElementById("depth");
+        depth.textContent ="State history length = " + history.length + " stack depth= " + newDepth;
+}
+
+window.addEventListener("hashchange", locationHashChanged, false);
+
+function keyup_handler(e) {
+        var num;
+		if(e.keyIdentifier != undefined) {
+          if((e.location == e.DOM_KEY_LOCATION_NUMPAD && "U+004" == e.keyIdentifier.substring(0,5)) ||
+          (e.location == e.DOM_KEY_LOCATION_STANDARD && e.keyIdentifier.substring(0,5) == "U+003")) {
+                num = e.keyIdentifier.substring(5,6);
+          }
+        } else if(e.key != undefined) {
+                num = e.key;
+        }
+        if(0<=num && num<10) {
+				var hash = setQueryVariable("state", num, null)
+				hash = setQueryVariable("depth", 1+(+oldDepth), hash);
+                history.pushState(null,null,document.location.pathname+'#'+encodeURI(hash));
+                locationHashChanged();
+        }
+}
+
+window.addEventListener("keyup", keyup_handler, false);
+
+</script>
+
+</body></html>
