@@ -6,6 +6,13 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $.ajax({
+            url : "https://api.github.com/repos/stephanesan/stephanesan.github.io/contents/raml-designer/raml.dir",
+            dataType: "text",
+            success : function (data) {
+                $("#dir").text(data);
+            }
+        });
+         $.ajax({
             url : "raml/github.raml",
             dataType: "text",
             success : function (data) {
@@ -16,6 +23,7 @@
 </script>
 <form>
     <textarea id="text" rows="20" cols="70">loaded text here</textarea>
+    <textarea id="dir" rows="20" cols="70">loaded text here</textarea>
 </form>
 </body>
 </html>
