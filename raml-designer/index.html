@@ -1,0 +1,21 @@
+<html>
+<head>
+<script type="text/javascript" src="http://static-anypoint-mulesoft-com.s3.amazonaws.com/API_examples_notebooks/js/jquery.min.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $.ajax({
+            url : "raml/github.raml",
+            dataType: "text",
+            success : function (data) {
+                $("#text").text(data);
+            }
+        });
+    }); 
+</script>
+<form>
+    <textarea name="text" rows="20" cols="70">loaded text here</textarea>
+</form>
+</body>
+</html>
