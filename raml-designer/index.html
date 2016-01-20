@@ -11,7 +11,7 @@
             success : function (data) {
                 var data = JSON.parse(data);
                 for(var i=0; i<data.length; i++) {
-                    var name = name;
+                    var name = data[i].name;
                     var input = document.createElement("textarea");
                     input.id = name;
                     input.name = name;
