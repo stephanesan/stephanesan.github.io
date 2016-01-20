@@ -23,7 +23,7 @@
                        url : "raml/"+name,
                        dataType: "text",
                        success : function (data) {
-                           document.getElementById("content").value = data;
+                           document.getElementById(name).value = data;
                        }
                     });
                 }
