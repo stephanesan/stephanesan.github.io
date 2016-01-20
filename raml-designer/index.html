@@ -17,12 +17,14 @@
                     input.name = name;
                     input.cols = "70";
                     input.rows = "20";
-                    document.getElementById("content").appendChild(input); 
+                    //document.getElementById("content").appendChild(input); 
+                    $("#content").append(input); 
                     $.ajax({
                        url : "raml/"+name,
                        dataType: "text",
                        success : function (data) {
-                           document.getElementById(name).value = data;
+                           //document.getElementById(name).value = data;
+                           $('#'+name).val(data);
                        }
                     });
                 }
