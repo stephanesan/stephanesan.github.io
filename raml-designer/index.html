@@ -8,8 +8,8 @@
         $.ajax({
             url : "https://api.github.com/repos/stephanesan/stephanesan.github.io/contents/raml-designer/raml",
             dataType: "text",
-            success : function (data) {
-                var data = JSON.parse(data);
+            success : function (jdata) {
+                var data = JSON.parse(jdata);
                 for(var i=0; i<data.length; i++) {
                     var name = data[i].name;
                     var input = document.createElement("textarea");
@@ -23,7 +23,7 @@
                        url : "raml/"+name,
                        dataType: "text",
                        success : function (data) {
-                           $('#'+name).value = data;
+                           document.getElementById("content").value = data;
                        }
                     });
                 }
