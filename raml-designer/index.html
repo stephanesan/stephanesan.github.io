@@ -12,12 +12,17 @@
                 var data = JSON.parse(data);
                 var out = "";
                 for(i=0; i<data.length; i++) {
-                     out = data[i].name + "\n";
+                     var content = $("#content")
+                     var input = document.createElement("textarea");
+                     input.name = data[i].name;
+                     input.cols = "70";
+                     input.rows = "20";
+                     content.appendChild(input); //appendChild
                      $.ajax({
                         url : "raml/"+data[i].name,
                         dataType: "text",
                         success : function (data) {
-                            $("#text").text(data);
+                            input.text(data);
                         }
                     });
                 }
@@ -26,9 +31,7 @@
         });
     }); 
 </script>
-<form>
-    <textarea id="text" rows="20" cols="70">loaded text here</textarea>
-    <textarea id="dir" rows="20" cols="70">loaded text here</textarea>
+<form id="content">
 </form>
 </body>
 </html>
