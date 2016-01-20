@@ -12,16 +12,16 @@
                 var data = JSON.parse(data);
                 var out = "";
                 for(i=0; i<data.length; i++) {
-                    out = data[i].name + "\n";
+                     out = data[i].name + "\n";
+                     $.ajax({
+                        url : "raml/"+data[i].name,
+                        dataType: "text",
+                        success : function (data) {
+                            $("#text").text(data);
+                        }
+                    });
                 }
-                $("#dir").text(data);
-            }
-        });
-         $.ajax({
-            url : "raml/github.raml",
-            dataType: "text",
-            success : function (data) {
-                $("#text").text(data);
+                $("#dir").text(out);
             }
         });
     }); 
