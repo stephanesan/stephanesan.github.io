@@ -9,6 +9,11 @@
             url : "https://api.github.com/repos/stephanesan/stephanesan.github.io/contents/raml-designer/raml",
             dataType: "text",
             success : function (data) {
+                var data = JSON.parse(data);
+                var out = "";
+                for(i=0; i<data.length; i++) {
+                    out = data[i].name + "\n";
+                }
                 $("#dir").text(data);
             }
         });
