@@ -11,22 +11,20 @@
             success : function (data) {
                 var data = JSON.parse(data);
                 var out = "";
-                for(i=0; i<data.length; i++) {
-                     var content = $("#content")
+                for(var i=0; i<data.length; i++) {
                      var input = document.createElement("textarea");
                      input.name = data[i].name;
                      input.cols = "70";
                      input.rows = "20";
-                     content.appendChild(input); //appendChild
+                     $("#content").appendChild(input); //appendChild
                      $.ajax({
                         url : "raml/"+data[i].name,
                         dataType: "text",
                         success : function (data) {
-                            input.text(data);
+                            input.value(data);
                         }
                     });
                 }
-                $("#dir").text(out);
             }
         });
     }); 
