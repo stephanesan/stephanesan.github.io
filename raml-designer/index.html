@@ -16,7 +16,7 @@
                      input.name = data[i].name;
                      input.cols = "70";
                      input.rows = "20";
-                     $("#content").appendChild(input); //appendChild
+                     $("content").appendChild(input); //appendChild
                      $.ajax({
                         url : "raml/"+data[i].name,
                         dataType: "text",
