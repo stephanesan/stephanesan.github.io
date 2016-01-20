@@ -55,7 +55,9 @@
                     var name = data[i].name;
                     var input = document.createElement("textarea");
                     input.id = name;
-                    input.name = name;
+                    input.style ='display:none';
+                    input.class='raml'; 
+                    input.title = name;
                     input.cols = "70";
                     input.rows = "20";
                     //document.getElementById("content").appendChild(input); 
