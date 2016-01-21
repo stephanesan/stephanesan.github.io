@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <html style="height: 100%">
-    <title>RAML API Spec: </title>
+    <title>RAML API Spec: Congo API For Drone Deliveries - Refactored</title>
     <link type="text/css" href="style.css" rel="stylesheet">
     <script type="text/javascript" src="scripts/jquery.min.js"></script>
     <script type="text/javascript" src="scripts/mosaic.1.0.1.js"></script>
@@ -33,35 +33,29 @@
       .run(function (config) {
         config.set('fsFactory', 'memoryFileSystem');
       })
-      .run(function (fileSystem, options) {
+      .run(function (fileSystem, options, $http) {
             options.readOnly = true;
-            var xhttp_d = new XMLHttpRequest();
-            xhttp_d.onreadystatechange = function() {
-                if (xhttp_d.readyState == 4 && xhttp_d.status == 200) {
-                    var data = JSON.parse(xhttp_d.responseText);
-                    for(var i=0; i<data.length; i++) {
-                        var name = data[i].name;
-                        var xhttp_f = new XMLHttpRequest();
-                        xhttp_f.onreadystatechange = function() {
-                            if (xhttp_f.readyState == 4 && xhttp_f.status == 200) {
-                                //fileSystem.save('/' + name, xhttp_f.responseText);
-                                fileSystem.save('/' + 'bla.raml', "bla");
-                                //console.log("received for "+ name);
-                                //console.log("content  "+ xhttp_f.responseText);
-                            }
-                        };
-                        xhttp_f.open("GET", "http://stephanesan.github.io/raml-designer/raml/"+name, true);
-                        xhttp_f.send();
-                    }
+            console.log("before");
+            //fileSystem.save('/' + 'bla.raml', "blabla.... ");
+                        fileSystem.save('/' + 'bla.raml', "blabla.... ");
+            console.log("after");
+        
+            $http.get('https://api.github.com/repos/stephanesan/stephanesan.github.io/contents/raml-designer/raml').then(function(response) {
+                var data = response.data;
+                for(var i=0; i<data.length; i++) {
+                    var name = data[i].name;
+                    $http.get(data[i].download_url).then(function(response) {
+                        console.log("content for " + "blo.ram" +" is "+ "bloblo....");
+                        //fileSystem.save('/' + 'blo.raml', "bloblo.... ");
+                        //fileSystem.save('/' + name, response.data);
+                        //console.log("content for " + name +" is "+ response.data);
+                    });
                 }
-            };
-            xhttp_d.open("GET", "https://api.github.com/repos/stephanesan/stephanesan.github.io/contents/raml-designer/raml", true);
-            xhttp_d.send();
+            });
       });
 </script>
 
 </textarea>
-
 
 <iframe id="iframe-container" srcx="frame.html" style="width: 100%; height: 100%; border: 0;"></iframe>
 <script>
