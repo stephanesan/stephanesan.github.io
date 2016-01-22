@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>My App</title>
+<link rel="stylesheet" href="dist/styles/api-designer-vendor.css">
+<link rel="stylesheet" href="dist/styles/api-designer.css">
+</head>
+<body ng-app="ramlEditorApp">
+<raml-editor></raml-editor>
+<script src="dist/scripts/api-designer-vendor.js"></script>
+<script src="dist/scripts/api-designer.js"></script>
+<script>
+// This part is needed only if you want to provide your own Persistance Implementation
+// Angular Module must match "ramlEditorApp"
+angular.module('ramlEditorApp')
+.factory('MyFileSystem', function ($q, config, $rootScope, $http) {
+        var service = {};
+        var files = [];
+
+        service.directory = function (path) {
+            var deferred = $q.defer();
+            console.log("dir path " + path);
+            $http.get('https://api.github.com/repos/stephanesan/stephanesan.github.io/contents/raml-designer/raml').then(function (response) {
+                var data = response.data;
+                var children = [];
+               for(var i=0; i<data.length; i++) {
+                   var index = path + (data[i].name); 
+                   files[index] = data[i].download_url; 
+                   children.push({path: data[i].name}); 
+                }
+                deferred.resolve({path: '/', children: children});
+            });
+            // Your magic goes here:
+            // Do deferred.resolve(data); to fulfull the promise or
+            // deferred.reject(error); to reject it.
+
+            return deferred.promise;
+        };
+
+        service.load = function (path) {
+            var deferred = $q.defer();
+            console.log("load path " + path);
+            var download_url = files[('/'+path)]; 
+            $http.get(download_url).then(function(response) {
+                    deferred.resolve(response.data)
+            });
+
+            // Your magic goes here:
+            // Do deferred.resolve(data); to fulfull the promise or
+            // deferred.reject(error); to reject it.
+
+            return deferred.promise;
+        };
+
+        service.remove = function (path, name) {
+            var deferred = $q.defer();
+
+            // Your magic goes here:
+            // Do deferred.resolve(data); to fulfull the promise or
+            // deferred.reject(error); to reject it.
+
+            return deferred.promise;
+        };
+
+        service.save = function (path, name, contents) {
+            var deferred = $q.defer();
+
+            // Your magic goes here:
+            // Do deferred.resolve(data); to fulfull the promise or
+            // deferred.reject(error); to reject it.
+
+            return deferred.promise;
+        };
+
+        return service;
+})
+.run(function (MyFileSystem, config, $rootScope) {
+        // Set MyFileSystem as the filesystem to use
+        config.set('fsFactory', 'MyFileSystem');
+
+        // In case you want to send notifications to the user
+        // (for instance, that he must login to save).
+        // The expires flags means whether
+        // it should be hidden after a period of time or the
+        // user should dismiss it manually.
+        $rootScope.$broadcast('event:notification',
+            {message: 'File saved.', expires: true});
+
+        });
+</script>
+<style>
+html,
+body {
+    height: 100%;
+}
+</style>
+</body>
+</html>
