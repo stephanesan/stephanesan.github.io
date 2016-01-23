@@ -21,13 +21,14 @@ angular.module('ramlEditorApp')
         service.directory = function (path) {
             var deferred = $q.defer();
             console.log("dir path " + path);
-            $http.get('https://api.github.com/repos/stephanesan/stephanesan.github.io/contents/raml-designer/raml').then(function (response) {
+            $http.get('https://api.github.com/repos/stephanesan/stephanesan.github.io/contents/raml-designer/').then(function (response) {
                 var data = response.data;
                 var children = [];
                for(var i=0; i<data.length; i++) {
                    var index = path + (data[i].name); 
                    files[index] = data[i].download_url; 
-                   children.push({path: data[i].name}); 
+                   var type = data[i].type == 'file'?'file':'folder'; 
+                   children.push({path: data[i].name, type: type/*, type: data[i].type*/}); 
                 }
                 deferred.resolve({path: '/', children: children});
             });
