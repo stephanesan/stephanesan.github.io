@@ -81,7 +81,10 @@ angular.module('ramlEditorApp')
                                 } else {
                                     resolve(out);
                                 }
-                            }
+                            }, function(response) {
+                                alert("Failed: " + response.config.method + " on \"" + response.config.url +"\" returned: "+response.statusText+".");
+                                reject(response.status);
+                            } 
                         );
                         }
                     );
@@ -120,6 +123,9 @@ angular.module('ramlEditorApp')
                     }).then(function(response) {
                         console.log(response.data);
                         deferred.resolve(response.data);
+            }, function(response) {
+                alert("Failed: " + response.config.method + " on \"" + response.config.url +"\" returned: "+response.statusText+".");
+                reject(response.status);
             });
 
             // Your magic goes here:
