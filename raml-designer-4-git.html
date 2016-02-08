@@ -20,18 +20,26 @@ angular.module('ramlEditorApp')
         var service = {};
         var files = [];
 
-        function getGitPath() {
+        function getParams() {
             var queries = window.location.search.replace(/^\?/, '').split('&');
             var searchObject = {};
             for( i = 0; i < queries.length; i++ ) {
                 split = queries[i].split('=');
-                searchObject[split[0]] = split[1];
+                searchObject[split[0]] = decodeURIComponent(split[1]);
             }
-            var url = searchObject['gitPath'];
-            return (url == null?'mulesoft/api-console/contents/dist/examples':url);
+            var repo = searchObject['gitRepo'];
+            var path = searchObject['gitPath'];
+            var ref = searchObject['gitRef'];
+            if (repo == null) {
+                repo = 'mulesoft/api-console';
+                path = 'dist/examples';
+            }
+            if (path == null) path = '.';
+            if (ref == null) ref = 'master';
+            return {repo: repo, path: path, ref: ref};
         }
         
-        var gitPath = getGitPath();
+        var gitParams = getParams();
 
         service.directory = function (path) {
             var deferred = $q.defer();
@@ -60,13 +68,13 @@ angular.module('ramlEditorApp')
                 };
             };
 
-            var root = {path: path};
+            var root = {path: gitParams.path};
             
             function dir(current) {
                 p1 = new Promise(
                         function(resolve, reject) {
                         var f = makeParseGit(current);
-                        $http.get('https://api.github.com/repos/'+gitPath+'/'+current.path).then(
+                        $http.get('https://api.github.com/repos/'+gitParams.repo+'/contents/'+current.path+'?ref='+gitParams.ref).then(
                             function (data) {
                                 var out = f(data);
                                 var promisses = [];
