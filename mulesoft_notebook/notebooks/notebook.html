@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>API Notebook by MuleSoft</title>
+<link rel="stylesheet" href="/styles/main.css">
+
+</head>
+<body>
+<div class="notebook-container" id="notebook" data-content=""></div>
+
+<script src="../scripts/api-notebook-site.js"></script>
+<script>
+(function () {
+ var notebook = window.notebook = new Notebook(document.getElementById('notebook'), {
+className: 'notebook-frame',
+config: {
+content: document.getElementById('notebook').getAttribute('data-content'),
+style: [
+'body { padding: 1em; }',
+'.application { margin: 0 auto; min-width: 600px; max-width: 1600px; }'
+].join('\n'),
+embedded: false
+}
+});
+
+ // Trigger the introduction modal when loaded.
+ notebook.ready(function () {
+     notebook.message('notebookIntroduction');
+     });
+ })();
+</script>
+
+<script>
+(function () {
+ window.notebook.ready(function () {
+     var App = window.notebook.window.App;
+
+     // If the hash has been set previously, break. It probably means we have
+     // an id to load from.
+     if (window.location.hash) { return; }
+
+     var fileUrl = App.Library.url.parse(window.location.href, true).query.example;
+
+     // Break if no fule url has been defined.
+     if (!fileUrl) { return; }
+
+     App.middleware.trigger('ajax', {
+url: fileUrl
+}, function (err, xhr) {
+if (xhr.status !== 200) { return; }
+
+// Remove the file from the current url.
+var url = App.Library.url.parse(window.location.href, true);
+delete url.search;
+delete url.query.example;
+window.history.replaceState(null, null, App.Library.url.format(url));
+
+try {
+response = JSON.parse(xhr.responseText);
+} catch (e) {
+return console.log(e);
+}
+
+if (typeof response !== 'object') {
+return console.log(new Error('Unexpected response'));
+}
+
+var list = [];
+App._.each(response, function (content) {
+        if (content && content.files && content.files['notebook.md']) { 
+        list.push({
+id: content.id,
+updatedAt: new Date(content.updated_at),
+meta: {
+title: content.description
+}
+});
+        }
+        });
+
+
+// Update the notebook contents and trigger a re-render of the notebook.
+App.persistence.new(function () {
+        App.persistence.get('items').set(list);
+        if(list && list.length>0) 
+        App.persistence.get('notebook').set('id', list[0].id);
+        App.persistence.trigger('changeNotebook');
+        });
+});
+});
+})();
+</script>
+
+
+<script src="integration.js"></script>
+</body>
+</html>
+
