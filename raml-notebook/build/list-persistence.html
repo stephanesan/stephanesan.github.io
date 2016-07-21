@@ -31,12 +31,14 @@ $(document).ready(function(){
             $.ajax({url: fileUrl,
                 success: function(result,status,xhr){
                     var pages = (JSON.parse(atob(result.content))).pages;
-                    for(var i=0; i<pages.length; i++)
-                        list[i] = { 
+                    for(var i=0; i<pages.length; i++) {
+                        if('notebook' !== pages[i].type) continue;
+                        list[pages[i].order] = { 
                             id: dirUrl+pages[i].name+".md", 
                             updatedAt: new Date(pages[i].audit.created.date),
                             meta:{title: pages[i].name}
                         };
+                    }
                     console.log(list);
                     console.log("Starting app...");
                     App.start(document.body, {
