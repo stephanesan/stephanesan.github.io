@@ -115,6 +115,32 @@ function loadNotebook(ref) {
 <script>
 
 $(document).ready(function(){
+        var notebook = window.notebook = 
+              new Notebook(document.body, {
+                inject: [
+                  'plugins/proxy.js',
+                  'plugins/gist-persistence.js',
+                  'plugins/filter-properties.js',
+                  'plugins/raml-client-generator.js',
+                  'plugins/function-property-filter.js'
+                ],
+                exec: [
+                  'App.middleware.register(proxyPlugin);',
+                  'App.middleware.register(gistPersistencePlugin);',
+                  'App.middleware.register(filterPropertiesPlugin);',
+                  'App.middleware.register(ramlClientGeneratorPlugin);',
+                  'App.middleware.register(functionPropertyFilterPlugin);'
+                ].join('\n'),
+                config: {
+                  style: [
+                    'body { padding: 1em; }',
+                    '.application { max-width: 52em; margin: 0 auto; }'
+                  ].join('\n'),
+                  embedded: false
+                }
+              }, {
+                minHeight: '100%'
+              });
         var queries = window.location.search.replace(/^\?/, '').split('&');
         var searchObject = {};
         for(var i = 0; i < queries.length; i++ ) {
@@ -143,6 +169,7 @@ $(document).ready(function(){
                     }
                     document.getElementById("mySidenav").innerHTML=innerHtml;
                     document.list = list;
+                    var App = window.notebook.window.App;
                     App.persistence.get('items').set(list);
                     if(list && list.length>0) 
                         App.persistence.get('notebook').set('id', list[0].id);
@@ -153,33 +180,7 @@ $(document).ready(function(){
                     console.log(error);
                 }
             });
-        var notebook = window.notebook = 
-              new Notebook(document.body, {
-                inject: [
-                  'plugins/proxy.js',
-                  'plugins/gist-persistence.js',
-                  'plugins/filter-properties.js',
-                  'plugins/raml-client-generator.js',
-                  'plugins/function-property-filter.js'
-                ],
-                exec: [
-                  'App.middleware.register(proxyPlugin);',
-                  'App.middleware.register(gistPersistencePlugin);',
-                  'App.middleware.register(filterPropertiesPlugin);',
-                  'App.middleware.register(ramlClientGeneratorPlugin);',
-                  'App.middleware.register(functionPropertyFilterPlugin);'
-                ].join('\n'),
-                config: {
-                  style: [
-                    'body { padding: 1em; }',
-                    '.application { max-width: 52em; margin: 0 auto; }'
-                  ].join('\n'),
-                  embedded: false
-                }
-              }, {
-                minHeight: '100%'
-              });
-         
+        
         // Trigger the introduction modal when loaded.
         notebook.ready(function () {
                 notebook.message('notebookIntroduction');
