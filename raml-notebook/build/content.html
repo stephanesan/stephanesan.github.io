@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="styles/main.css"/>
+<style>
+body {
+        font-family: "Lato", sans-serif;
+        transition: background-color .5s;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #818181;
+    display: block;
+    transition: 0.3s
+}
+
+.sidenav a:hover, .offcanvas a:focus{
+        color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+.sidenav div {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #A1A1A1;
+    display: block;
+    font-weight: bold;
+    transition: 0.3s
+}
+
+#main {
+    transition: margin-left .5s;
+    padding: 16px;
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+    .sidenav div {font-size: 20px;}
+}
+</style>
+
+<script>
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("main").style.marginLeft = "250px";
+    document.body.style.backgroundColor = "rgba(0,0,0,0.4)";
+}
+
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main").style.marginLeft= "0";
+    document.body.style.backgroundColor = "white";
+}
+
+function loadNotebook(ref) {
+    var index = ref.substring(ref.indexOf('#')+1, ref.length);
+    console.log("new page ", index);
+    $.ajax({url: document.list[index].id,
+            success: function(result,status,xhr){
+                var App = window.notebook.window.App;
+                App.persistence.get('notebook').set('content',
+                    atob(result.content));
+                App.persistence.trigger('changeNotebook');
+                closeNav();
+            },
+            error: function(xhr,status,error) {
+                console.log(error);
+            }
+    });
+}
+</script>
+
+</head>
+<body>
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+</div>
+
+<div id="main">
+    <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Content</span>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="scripts/embed.js"></script>
+
+<script>
+
+$(document).ready(function(){
+        var queries = window.location.search.replace(/^\?/, '').split('&');
+        var searchObject = {};
+        for(var i = 0; i < queries.length; i++ ) {
+            var split = queries[i].split('=');
+            searchObject[split[0]] = decodeURIComponent(split[1]);
+        }
+        var fileUrl = searchObject['index'];
+        var dirUrl = searchObject['dir'];
+        var list = [];
+        $.ajax({url: fileUrl,
+            success: function(result,status,xhr){
+                    var pages = (JSON.parse(atob(result.content))).pages;
+                    var innerHtml = document.getElementById("mySidenav").innerHTML;
+                    console.log(JSON.stringify(pages));
+                    for(var i=0; i<pages.length; i++) {
+                        if('header' == pages[i].type) {
+                            innerHtml = innerHtml.concat('<div>'+pages[i].name+'</div>');    
+                        } else if('notebook' == pages[i].type) {
+                            innerHtml = innerHtml.concat('<a href="#'+pages[i].order+'" onclick="loadNotebook(this.href)">'+pages[i].name+'</a>');    
+                            list[pages[i].order] = { 
+                                id: dirUrl+pages[i].name+".md", 
+                                updatedAt: new Date(pages[i].audit.created.date),
+                                meta:{title: pages[i].name}
+                            };
+                        }
+                    }
+                    document.getElementById("mySidenav").innerHTML=innerHtml;
+                    document.list = list;
+                    openNav();
+                },
+                error: function(xhr,status,error) {
+                    console.log(error);
+                }
+            });
+        var notebook = window.notebook = 
+              new Notebook(document.body, {
+                inject: [
+                  'plugins/proxy.js',
+                  'plugins/gist-persistence.js',
+                  'plugins/filter-properties.js',
+                  'plugins/raml-client-generator.js',
+                  'plugins/function-property-filter.js'
+                ],
+                exec: [
+                  'App.middleware.register(proxyPlugin);',
+                  'App.middleware.register(gistPersistencePlugin);',
+                  'App.middleware.register(filterPropertiesPlugin);',
+                  'App.middleware.register(ramlClientGeneratorPlugin);',
+                  'App.middleware.register(functionPropertyFilterPlugin);'
+                ].join('\n'),
+                config: {
+                  style: [
+                    'body { padding: 1em; }',
+                    '.application { max-width: 52em; margin: 0 auto; }'
+                  ].join('\n'),
+                  embedded: false
+                }
+              }, {
+                minHeight: '100%'
+              });
+         
+        // Trigger the introduction modal when loaded.
+        notebook.ready(function () {
+                notebook.message('notebookIntroduction');
+        });
+ });
+</script> 
+</body>
+</html> 
+
