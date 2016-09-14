@@ -143,6 +143,10 @@ $(document).ready(function(){
                     }
                     document.getElementById("mySidenav").innerHTML=innerHtml;
                     document.list = list;
+                    App.persistence.get('items').set(list);
+                    if(list && list.length>0) 
+                        App.persistence.get('notebook').set('id', list[0].id);
+                    App.persistence.trigger('changeNotebook');
                     openNav();
                 },
                 error: function(xhr,status,error) {
