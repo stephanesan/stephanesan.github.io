@@ -135,7 +135,7 @@ $(document).ready(function(){
                         } else if('notebook' == pages[i].type) {
                             innerHtml = innerHtml.concat('<a href="#'+pages[i].order+'" onclick="loadNotebook(this.href)">'+pages[i].name+'</a>');    
                             list[pages[i].order] = { 
-                                id: dirUrl+pages[i].name+".md", 
+                                id: pages[i].id, 
                                 updatedAt: new Date(pages[i].audit.created.date),
                                 meta:{title: pages[i].name}
                             };
