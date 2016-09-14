@@ -80,6 +80,10 @@ function closeNav() {
 function loadNotebook(ref) {
     var index = ref.substring(ref.indexOf('#')+1, ref.length);
     console.log("new page ", index);
+    var App = window.notebook.window.App;
+    App.persistence.get('notebook').set('id', document.list[index].id);
+    App.persistence.trigger('changeNotebook');
+    /*
     $.ajax({url: document.list[index].id,
             success: function(result,status,xhr){
                 var App = window.notebook.window.App;
@@ -92,6 +96,7 @@ function loadNotebook(ref) {
                 console.log(error);
             }
     });
+    */
 }
 </script>
 
