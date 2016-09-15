@@ -79,26 +79,23 @@ function closeNav() {
 
 function loadNotebook(ref) {
     var id = ref.substring(ref.indexOf('#')+1, ref.length);
-    console.log("new page ", id);
-    var App = window.notebook.window.App;
-    App.persistence.new(function () {
-        App.persistence.get('notebook').set('id', id);
-        App.persistence.trigger('changeNotebook');
-        });
-    /*
-    $.ajax({url: document.list[index].id,
+    var url = id: dirUrl+ref+".md", 
+
+    console.log("new page ", url);
+    $.ajax({url: url,
             success: function(result,status,xhr){
                 var App = window.notebook.window.App;
-                App.persistence.get('notebook').set('content',
-                    atob(result.content));
-                App.persistence.trigger('changeNotebook');
+                App.persistence.new(function () {
+                    App.persistence.get('notebook').set('content',
+                        atob(result.content));
+                    App.persistence.trigger('changeNotebook');
+                });
                 closeNav();
             },
             error: function(xhr,status,error) {
                 console.log(error);
             }
     });
-    */
 }
 </script>
 
@@ -175,13 +172,14 @@ $(document).ready(function(){
                     delete url.search;
                     delete url.query.example;
                     window.history.replaceState(null, null, App.Library.url.format(url));
-
+/*
                     App.persistence.new(function () {
                         App.persistence.get('items').set(list);
                         if(list && list.length>0) 
                             App.persistence.get('notebook').set('id', list[0].id);
                         App.persistence.trigger('changeNotebook');
                     });
+ */
                     openNav();
                 },
                 error: function(xhr,status,error) {
