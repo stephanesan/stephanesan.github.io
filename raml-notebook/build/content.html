@@ -149,6 +149,7 @@ $(document).ready(function(){
         var fileUrl = searchObject['index'];
         var dirUrl = searchObject['dir'];
         var list = [];
+        var first = null;
         $.ajax({url: fileUrl,
             success: function(result,status,xhr){
                     var pages = (JSON.parse(atob(result.content))).pages;
@@ -158,9 +159,10 @@ $(document).ready(function(){
                         if('header' == pages[i].type) {
                             innerHtml = innerHtml.concat('<div>'+pages[i].name+'</div>');    
                         } else if('notebook' == pages[i].type) {
+                            if(null == first) first = pages[i].name;
                             innerHtml = innerHtml.concat('<a href="#'+pages[i].id+'" onclick="loadNotebook(this.href)">'+pages[i].name+'</a>');    
                             list.push({ 
-                                id: pages[i].id, 
+                                id: pages[i].name, 
                                 updatedAt: new Date(pages[i].audit.created.date),
                                 meta:{title: pages[i].name}
                             });
@@ -173,6 +175,7 @@ $(document).ready(function(){
                     delete url.search;
                     delete url.query.example;
                     window.history.replaceState(null, null, App.Library.url.format(url));
+                    loadNotebook(first);
 /*
                     App.persistence.new(function () {
                         App.persistence.get('items').set(list);
