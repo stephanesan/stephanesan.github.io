@@ -78,6 +78,10 @@ function closeNav() {
 }
 
 function loadNotebook(ref) {
+
+    if(null == ref) {
+        ref = document.getElementById("mySidenav").getElementsByTagName("A")[1].getAttribute('href');
+    }
     var id = ref.substring(ref.indexOf('#')+1, ref.length);
     var url = document.dirUrl+id+".md";
 
@@ -140,6 +144,14 @@ $(document).ready(function(){
               }, {
                 minHeight: '100%'
               });
+        window.notebook.ready(function () {
+                var App = this.window.App;
+                var url = App.Library.url.parse(window.location.href, true);
+                delete url.search;
+                delete url.query.example;
+                window.history.replaceState(null, null, App.Library.url.format(url));
+                loadNotebook();
+        });
         var queries = window.location.search.replace(/^\?/, '').split('&');
         var searchObject = {};
         for(var i = 0; i < queries.length; i++ ) {
@@ -160,7 +172,7 @@ $(document).ready(function(){
                             innerHtml = innerHtml.concat('<div>'+pages[i].name+'</div>');    
                         } else if('notebook' == pages[i].type) {
                             if(null == first) first = pages[i].name;
-                            innerHtml = innerHtml.concat('<a href="#'+pages[i].id+'" onclick="loadNotebook(this.href)">'+pages[i].name+'</a>');    
+                            innerHtml = innerHtml.concat('<a href="#'+pages[i].name+'" onclick="loadNotebook(this.href)">'+pages[i].name+'</a>');    
                             list.push({ 
                                 id: pages[i].name, 
                                 updatedAt: new Date(pages[i].audit.created.date),
@@ -170,20 +182,6 @@ $(document).ready(function(){
                     }
                     document.getElementById("mySidenav").innerHTML=innerHtml;
                     document.dirUrl=dirUrl;
-                    var App = window.notebook.window.App;
-                    var url = App.Library.url.parse(window.location.href, true);
-                    delete url.search;
-                    delete url.query.example;
-                    window.history.replaceState(null, null, App.Library.url.format(url));
-                    loadNotebook(first);
-/*
-                    App.persistence.new(function () {
-                        App.persistence.get('items').set(list);
-                        if(list && list.length>0) 
-                            App.persistence.get('notebook').set('id', list[0].id);
-                        App.persistence.trigger('changeNotebook');
-                    });
- */
                     openNav();
                 },
                 error: function(xhr,status,error) {
