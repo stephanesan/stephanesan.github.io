@@ -81,8 +81,10 @@ function loadNotebook(ref) {
     var id = ref.substring(ref.indexOf('#')+1, ref.length);
     console.log("new page ", id);
     var App = window.notebook.window.App;
-    App.persistence.get('notebook').set('id', id);
-    App.persistence.trigger('changeNotebook');
+    App.persistence.new(function () {
+        App.persistence.get('notebook').set('id', id);
+        App.persistence.trigger('changeNotebook');
+        });
     /*
     $.ajax({url: document.list[index].id,
             success: function(result,status,xhr){
@@ -169,10 +171,17 @@ $(document).ready(function(){
                     }
                     document.getElementById("mySidenav").innerHTML=innerHtml;
                     var App = window.notebook.window.App;
-                    App.persistence.get('items').set(list);
-                    if(list && list.length>0) 
-                        App.persistence.get('notebook').set('id', list[0].id);
-                    App.persistence.trigger('changeNotebook');
+                    var url = App.Library.url.parse(window.location.href, true);
+                    delete url.search;
+                    delete url.query.example;
+                    window.history.replaceState(null, null, App.Library.url.format(url));
+
+                    App.persistence.new(function () {
+                        App.persistence.get('items').set(list);
+                        if(list && list.length>0) 
+                            App.persistence.get('notebook').set('id', list[0].id);
+                        App.persistence.trigger('changeNotebook');
+                    });
                     openNav();
                 },
                 error: function(xhr,status,error) {
