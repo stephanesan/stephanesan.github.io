@@ -80,12 +80,14 @@ function closeNav() {
 function loadNotebook(ref) {
 
     if(null == ref) {
-        ref = document.getElementById("mySidenav").getElementsByTagName("A")[1].getAttribute('href');
+        var nav = document.getElementById("mySidenav").getElementsByTagName("A");
+        if(nav || nav.length < 2) return;
+        ref = nav[1].getAttribute('href');
     }
     var id = ref.substring(ref.indexOf('#')+1, ref.length);
     var url = document.dirUrl+id+".md";
 
-    console.log("new page ", url);
+    console.log("Loading notebook ", url);
     $.ajax({url: url,
             success: function(result,status,xhr){
                 var App = window.notebook.window.App;
@@ -94,7 +96,6 @@ function loadNotebook(ref) {
                         atob(result.content));
                     App.persistence.trigger('changeNotebook');
                 });
-                closeNav();
             },
             error: function(xhr,status,error) {
                 console.log(error);
@@ -139,7 +140,7 @@ $(document).ready(function(){
                     'body { padding: 1em; }',
                     '.application { max-width: 52em; margin: 0 auto; }'
                   ].join('\n'),
-                  embedded: true
+                  embedded: false
                 }
               }, {
                 minHeight: '100%'
@@ -150,7 +151,6 @@ $(document).ready(function(){
                 delete url.search;
                 delete url.query.example;
                 window.history.replaceState(null, null, App.Library.url.format(url));
-                notebook.message('notebookIntroduction');
         });
         var queries = window.location.search.replace(/^\?/, '').split('&');
         var searchObject = {};
