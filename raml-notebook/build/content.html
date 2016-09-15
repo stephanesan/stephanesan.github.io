@@ -79,7 +79,7 @@ function closeNav() {
 
 function loadNotebook(ref) {
     var id = ref.substring(ref.indexOf('#')+1, ref.length);
-    var url = id: dirUrl+ref+".md", 
+    var url = document.dirUrl+ref+".md";
 
     console.log("new page ", url);
     $.ajax({url: url,
@@ -167,6 +167,7 @@ $(document).ready(function(){
                         }
                     }
                     document.getElementById("mySidenav").innerHTML=innerHtml;
+                    document.dirUrl=dirUrl;
                     var App = window.notebook.window.App;
                     var url = App.Library.url.parse(window.location.href, true);
                     delete url.search;
