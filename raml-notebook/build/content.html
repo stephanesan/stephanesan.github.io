@@ -81,7 +81,7 @@ function loadNotebook(ref) {
 
     if(null == ref) {
         var nav = document.getElementById("mySidenav").getElementsByTagName("A");
-        if(nav || nav.length < 2) return;
+        if(nav == null || nav.length < 2) return;
         ref = nav[1].getAttribute('href');
     }
     var id = ref.substring(ref.indexOf('#')+1, ref.length);
