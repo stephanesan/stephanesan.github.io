@@ -151,7 +151,6 @@ $(document).ready(function(){
                 delete url.search;
                 delete url.query.example;
                 window.history.replaceState(null, null, App.Library.url.format(url));
-        });
         var queries = window.location.search.replace(/^\?/, '').split('&');
         var searchObject = {};
         for(var i = 0; i < queries.length; i++ ) {
@@ -189,6 +188,7 @@ $(document).ready(function(){
                     console.log(error);
                 }
             });
+        });
         
  });
 </script> 
