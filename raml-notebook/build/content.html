@@ -79,7 +79,7 @@ function closeNav() {
 
 function loadNotebook(ref) {
     var id = ref.substring(ref.indexOf('#')+1, ref.length);
-    var url = document.dirUrl+ref+".md";
+    var url = document.dirUrl+id+".md";
 
     console.log("new page ", url);
     $.ajax({url: url,
