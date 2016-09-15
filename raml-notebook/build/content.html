@@ -144,13 +144,13 @@ $(document).ready(function(){
               }, {
                 minHeight: '100%'
               });
-        window.notebook.ready(function () {
+        notebook.ready(function () {
                 var App = this.window.App;
                 var url = App.Library.url.parse(window.location.href, true);
                 delete url.search;
                 delete url.query.example;
                 window.history.replaceState(null, null, App.Library.url.format(url));
-                loadNotebook();
+                notebook.message('notebookIntroduction');
         });
         var queries = window.location.search.replace(/^\?/, '').split('&');
         var searchObject = {};
@@ -183,16 +183,13 @@ $(document).ready(function(){
                     document.getElementById("mySidenav").innerHTML=innerHtml;
                     document.dirUrl=dirUrl;
                     openNav();
+                    loadNotebook();
                 },
                 error: function(xhr,status,error) {
                     console.log(error);
                 }
             });
         
-        // Trigger the introduction modal when loaded.
-        notebook.ready(function () {
-                notebook.message('notebookIntroduction');
-        });
  });
 </script> 
 </body>
