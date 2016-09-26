@@ -64,6 +64,7 @@ body {
 }
 </style>
 
+<script src="querry-parameters.js"></script>
 <script>
 function openNav() {
     document.getElementById("mySidenav").style.width = "500px";
@@ -88,7 +89,7 @@ function loadNotebook(ref) {
         ref = nav[1].getAttribute('href');
     }
     var id = ref.substring(ref.indexOf('#')+1, ref.length);
-    var url = document.dirUrl+id+".md";
+    var url = document.dirUrl+id+".md"+document.dirQ;
 
     console.log("Loading notebook ", url);
     $.ajax({url: url,
@@ -161,8 +162,20 @@ $(document).ready(function(){
             var split = queries[i].split('=');
             searchObject[split[0]] = decodeURIComponent(split[1]);
         }
-        var fileUrl = searchObject['index'];
-        var dirUrl = searchObject['dir'];
+        var fileUrl = "https://"+ assemblePath([
+                    searchObject['gitApi'], 
+                    "repos",
+                    searchObject['gitRepo'], 
+                    "contents",
+                    searchObject['gitFile']])
+                    +"?ref="+searchObject['gitRef'];
+        document.dirUrl = "https://"+ assemblePath([
+                    searchObject['gitApi'], 
+                    "repos",
+                    searchObject['gitRepo'], 
+                    "contents",
+                    searchObject['gitPath']])+'/';
+        document.dirQ= "?ref="+searchObject['gitRef'];
         var first = null;
         $.ajax({url: fileUrl,
             success: function(result,status,xhr){
@@ -179,7 +192,6 @@ $(document).ready(function(){
                     }
                     document.getElementById("mySidenav").innerHTML=innerHtml;
                     console.log("Menu was created")
-                    document.dirUrl=dirUrl;
                     openNav();
                     loadNotebook();
                 },
