@@ -2,8 +2,22 @@
 <opml version="2.0">
   <head>
     <title>AntennaPod Subscriptions</title>
-    <dateCreated>10 Jun 16 17:27:37 +0200</dateCreated>
+    <dateCreated>07 Dec 15 19:34:21 +0100</dateCreated>
   </head>
   <body>
+    <outline text="A State of Trance Official Podcast" title="A State of Trance Official Podcast" type="rss" xmlUrl="http://podcast.armadamusic.com/asot/podcast.xml" htmlUrl="http://www.astateoftrance.com" />
+    <outline text="Above &amp; Beyond: Group Therapy" title="Above &amp; Beyond: Group Therapy" type="rss" xmlUrl="http://static.aboveandbeyond.nu/grouptherapy/podcast.xml" htmlUrl="http://static.aboveandbeyond.nu/grouptherapy/podcast.xml" />
+    <outline text="Binomio Dj Music Sets  Lives &amp; Studio" title="Binomio Dj Music Sets  Lives &amp; Studio" type="rss" xmlUrl="http://binomio.podomatic.com/rss2.xml" htmlUrl="http://binomio.podomatic.com" />
+    <outline text="Clublife by Tiësto" title="Clublife by Tiësto" type="rss" xmlUrl="http://feeds.feedburner.com/tiestos_club_life" htmlUrl="http://www.tiesto.com" />
+    <outline text="Cream Radio" title="Cream Radio" type="rss" xmlUrl="http://cream.podtree.com/feed/podcast/" htmlUrl="http://cream.podtree.com" />
+    <outline text="DJ Paulette - PAULETTE GOES BANG" title="DJ Paulette - PAULETTE GOES BANG" type="rss" xmlUrl="http://feeds.djpod.com/djpaulette" htmlUrl="https://djpod.com/djpaulette" />
+    <outline text="FORWARD DISCO" title="FORWARD DISCO" type="rss" xmlUrl="http://nycsoulsessions.podomatic.com/rss2.xml" htmlUrl="http://nycsoulsessions.podomatic.com" />
+    <outline text="Gareth Emery: Electric For Life" title="Gareth Emery: Electric For Life" type="rss" xmlUrl="http://www.galexmusic.com/podcast/gareth.xml" htmlUrl="http://www.electricfor.life" />
+    <outline text="Global DJ Broadcast" title="Global DJ Broadcast" type="rss" xmlUrl="http://feeds.feedburner.com/MarkusSchulzGlobalDJBroadcast" htmlUrl="http://gdjb.podbean.com" />
+    <outline text="I Voice Music Box" title="I Voice Music Box" type="rss" xmlUrl="http://www.ibiza-voice.com/music/rss_podcast.php" htmlUrl="http://www.ibiza-voice.com/" />
+    <outline text="Laidback Luke - Mixmash Radio" title="Laidback Luke - Mixmash Radio" type="rss" xmlUrl="http://laidbackluke.podtree.com/feed/podcast/" htmlUrl="http://laidbackluke.podtree.com" />
+    <outline text="Paul van Dyk's VONYC Sessions Podcast" title="Paul van Dyk's VONYC Sessions Podcast" type="rss" xmlUrl="http://www.paulvandyk.com/podcast.php" htmlUrl="http://podcast.paulvandyk.com/" />
+    <outline text="Perfecto Podcast: featuring Paul Oakenfold" title="Perfecto Podcast: featuring Paul Oakenfold" type="rss" xmlUrl="http://oakenfold.libsyn.com/rss" htmlUrl="http://www.pauloakenfold.com" />
   </body>
 </opml>
+
